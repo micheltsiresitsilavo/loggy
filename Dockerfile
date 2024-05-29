@@ -15,7 +15,8 @@ RUN apt-get update && apt-get install -y \
     zip \
     unzip \
     git \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* \
+    && docker-php-ext-configure intl 
 
 # Enable Apache modules required for Laravel.
 RUN a2enmod rewrite
@@ -28,8 +29,7 @@ COPY apache-config.conf /etc/apache2/sites-available/000-default.conf
 
 # Install PHP extensions.
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
-&& docker-php-ext-install -j$(nproc) gd \
-RUN docker-php-ext-configure intl
+&& docker-php-ext-install -j$(nproc) gd 
 RUN docker-php-ext-configure pgsql -with-pgsql=/user/local/pgsql
 RUN docker-php-ext-install  pdo pdo_pgsql pgsql intl zip exif  
 RUN docker-php-ext-enable intl zip pdo_pgsql pgsql
