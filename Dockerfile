@@ -28,18 +28,12 @@ COPY apache-config.conf /etc/apache2/sites-available/000-default.conf
 
 # Install PHP extensions.
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
-&& docker-php-ext-install -j$(nproc) gd
+&& docker-php-ext-install -j$(nproc) gd \
 RUN docker-php-ext-configure intl
 RUN docker-php-ext-configure pgsql -with-pgsql=/user/local/pgsql
 RUN docker-php-ext-install  pdo pdo_pgsql pgsql intl zip exif  
 RUN docker-php-ext-enable intl zip pdo_pgsql pgsql
 # Install Composer globally..
-
-
-
-
-
-
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 # Create a directory for your Laravel application.
