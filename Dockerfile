@@ -12,6 +12,7 @@ RUN apt-get update && apt-get install -y \
     libfreetype6-dev \
     libpq-dev \
     libzip-dev \
+    icu-dev \
     zip \
     unzip \
     git \
