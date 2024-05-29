@@ -15,8 +15,7 @@ RUN apt-get update && apt-get install -y \
     zip \
     unzip \
     git \
-    && rm -rf /var/lib/apt/lists/* \
-    && docker-php-ext-configure intl 
+    && rm -rf /var/lib/apt/lists/* 
 
 # Enable Apache modules required for Laravel.
 RUN a2enmod rewrite
