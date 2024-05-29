@@ -10,6 +10,9 @@ RUN apt-get update && apt-get install -y \
     libpng-dev \
     libjpeg-dev \
     libfreetype6-dev \
+    libpq-dev \
+    libzip-dev \
+    postgresql-dev \
     zip \
     unzip \
     git \
@@ -25,9 +28,17 @@ ENV APACHE_DOCUMENT_ROOT /var/www/html/public
 COPY apache-config.conf /etc/apache2/sites-available/000-default.conf
 
 # Install PHP extensions.
-RUN docker-php-ext-install  gd pdo pdo_mysql intl pdo_pgsql zip exif  
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
+&& docker-php-ext-install -j$(nproc) gd
+RUN docker-php-ext-install  pdo pdo_pgsql pgsql intl zip exif  
+RUN docker-php-ext-enable intl zip pdo_pgsql pgsql
+# Install Composer globally..
 
-# Install Composer globally.
+
+
+
+
+
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 # Create a directory for your Laravel application.
