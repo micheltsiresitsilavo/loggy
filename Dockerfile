@@ -28,7 +28,7 @@ ENV APACHE_DOCUMENT_ROOT /var/www/html/public
 # Update the default Apache site configuration
 COPY apache-config.conf /etc/apache2/sites-available/000-default.conf
 
-RUN echo 'ServerName loggy-973c.onrender.com' > /etc/apache2/apache2.conf
+RUN echo 'ServerName loggy-973c.onrender.com' >> /etc/apache2/apache2.conf
 # Install PHP extensions.
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg \ 
 && docker-php-ext-install -j$(nproc) gd intl zip exif 
@@ -51,8 +51,8 @@ COPY . .
 RUN composer install --no-interaction --optimize-autoloader
 
 # Set permissions for Laravel.
-RUN chown -R www-data:www-data storage bootstrap/cache
-
+RUN chown -R www-data:www-data /var/www/html storage bootstrap/cache
+ 
 # Expose port 80 for Apache.
 EXPOSE 80
 
