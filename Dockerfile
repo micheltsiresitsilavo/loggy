@@ -16,6 +16,7 @@ RUN apt-get update && apt-get install -y \
     zip \
     unzip \
     git \
+    nodejs \
     && rm -rf /var/lib/apt/lists/* 
 
 # Enable Apache modules required for Laravel.
