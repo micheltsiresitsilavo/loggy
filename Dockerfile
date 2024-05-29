@@ -29,11 +29,14 @@ ENV APACHE_DOCUMENT_ROOT /var/www/html/public
 COPY apache-config.conf /etc/apache2/sites-available/000-default.conf
 
 # Install PHP extensions.
-RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
-&& docker-php-ext-install -j$(nproc) gd 
-RUN docker-php-ext-configure pgsql -with-pgsql=/user/local/pgsql
-RUN docker-php-ext-install  pdo pdo_pgsql pgsql intl zip exif  
-RUN docker-php-ext-enable intl zip pdo_pgsql pgsql
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg \ 
+&& docker-php-ext-install -j$(nproc) gd intl zip exif 
+RUN docker-php-ext-configure pgsql -with-pgsql=/user/local/pgsql \
+&& docker-php-ext-install  pdo pdo_pgsql pgsql 
+# RUN docker-php-ext-install  pdo pdo_pgsql pgsql intl zip exif  
+RUN docker-php-ext-enable intl zip pdo_pgsql pgsql exif
+
+
 # Install Composer globally..
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
@@ -57,8 +60,5 @@ CMD ["apache2-foreground"]
 
 # You can add any additional configurations or commands required for Laravel 10 here.
 # Install NPM dependencies
-RUN npm -v
-RUN npm install
+RUN npm install && npm run build
 
-# Build Vite assets
-RUN npm run build
