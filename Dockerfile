@@ -55,3 +55,8 @@ EXPOSE 80
 CMD ["apache2-foreground"]
 
 # You can add any additional configurations or commands required for Laravel 10 here.
+# Install NPM dependencies
+RUN npm install
+
+# Build Vite assets
+RUN npm run build
